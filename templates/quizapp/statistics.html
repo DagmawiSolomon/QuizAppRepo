@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--====styling=====-->
+    <link rel="stylesheet" href="{% static 'css/statistics.css' %}">
+    <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    <!--===Poppins===-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <!--======Boxicons======-->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <title>Quiz web app</title>
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <ul>
+                <li><a href="{% url 'home' %}" class="nav__logo">Logo</a></li>
+            </ul>
+            <div class="nav__menu" id="nav-menu">
+              <ul class="nav__list">
+
+                  {% if request.user.is_authenticated %}
+
+                  <li id="profiledropdown-large">
+                      <div class="div">
+                        {% if r.profile %}
+                        <img src="{{r.profile.url}}" >
+                        {% else %}
+                        <img src="{% static 'img/default.jpg' %}">
+                        {% endif %}
+                      </div>
+                    </li>
+                  <li id="profiledropdown-small">
+                      <div class="div">
+                        {% if r.profile %}
+                        <img src="{{r.profile.url}}" >
+                        {% else %}
+                        <img src="{% static 'img/default.jpg' %}">
+                        {% endif %}
+                       
+                        <div class="editCircle" id="editProfile">
+                          <i class='bx bxs-pencil' ></i>
+                        </div>
+                      </div>
+                    </li>
+                  <li class="nav__item username"><p>{{request.user.username}}</p></li>
+                  <li class="nav__item useremail"><p>{{request.user.email}}</p></li>
+                  <li class="nav__item navigation hidden-nav-item"><a href="{% url 'home' %}" class="nav_link "><i class='bx bx-home-alt'></i>Home</a></li>
+                  <li class="nav__item navigation"><a href="{% url 'leaderboard' %}" class="nav_link "><i class='bx bx-trophy' id="hidden" ></i>Leaderboard</a></li>
+                  <li class="nav__item navigation hidden-nav-item "><a href="{% url 'account_logout' %}" class="nav_link "><i class='bx bx-log-out' ></i>Logout</a></li>
+                  <div class="userprofile" id="userprofile">
+                    <div class="img">
+                      {% if r.profile%}
+                      <img src="{{r.profile.url}}">
+                      {% else %}
+                      <img src="{% static 'img/default.jpg' %}">
+                      {% endif%}
+                      <div class="upload-img">
+                        <p id="upload">+</p>
+                      </div>
+                    </div>
+                    <h4>{{ request.user }}</h4>
+                    <p class="email">{{request.user.email}}</p>
+                    <div class="button_container">
+                      <a href="{% url 'account_logout' %}">Logout</a>
+                    </div>
+                  </div>
+                  {% else%}
+                  <li class="nav__item"><a href="{% url 'account_login' %}" class="nav_link">Login</a></li>
+                  <li class="nav__item"><a href="{% url 'account_signup' %}" class="nav_link btn">Create an account</a></li>
+                  {% endif %}
+              </ul>
+          </div>
+            <ul class="nav__toogle" id="nav-toggle" >
+                <i class='bx bxs-grid '></i>
+            </ul>
+
+        </nav>
+        <div class="modal" id="popupmodal">
+          <div class="modal-content">
+            <h1 class="modal-title">Account Settings</h1>
+            <div class="userprofilearea">
+                
+                <div class="userProfileImg">
+                    
+                    {% if result.profile %}
+                    <img src="{{result.profile.url}}" alt="">
+                    {% else %}
+                    <img src="{% static 'img/default.jpg' %}" alt="">
+                    {% endif %}
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="upateInfomodal">
+                        <input type="text" name="username" placeholder="{{r.user.username}}">
+                        <input type="text" name="email" placeholder="{{r.user.email}}">
+                        <!--<input type="text" name="phonenumber" placeholder="Phonenumber">-->
+                    </div>
+                    <input type="file" name="profile_upload" class="custom-file-input" id="filefield">
+                
+                    <div class="updatebutton_container">
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+              <i class='bx bx-x' id="closeUploadPopup"></i>
+            </div>
+
+
+        </div>
+    </header>
+    <main>
+      {% if request.user.is_authenticated%}
+      {% if r.phone_number  %}
+      <p>{{adv.name}}</p>
+    <section class="ads">
+        <div class="ad-silver">
+          
+            <div class="img">
+                <img src="{{silver.image.url}}" alt="">
+            </div>
+            <div class="description">
+                <h2 class="data">{{silver.name}}<span class="close"><i class='bx bx-x'></i></span></h2>
+                <p class="desc">{{ silver.text}}</p>
+                <a href="{{silver.cta_link}}" target="blank">{{silver.cta}}</a>
+            </div>
+        </div>
+    </section>
+   <section class="leaderBoard">
+     <h1>Leaderboard</h1>
+     <div class="circles">
+       <div class="profile-container">
+        {% if r.profile %}
+        <img src="{{r.profile.url}}" alt="">
+        {% else %}
+        <img src="{% static 'img/default.jpg' %}" />
+        {% endif %}
+         <h1>{{r.user.username}}</h1>
+         <div class="score-container">
+           <div>
+            <h1>Score</h1>
+            <p id="score">{{r.score}}</p>
+           </div>
+           <div>
+             <h1>Points</h1>
+             <p id="points">{{point}}/{{q_count}}</p>
+           </div>
+         </div>
+         
+       </div>
+      </div>
+      <div class="table">
+          {% for r in result %}
+        <div class="card" id = "{{r.user.username}}">
+          <p class="rank"></p>
+          {% if r.profile %}
+          <img src="{{r.profile.url}}" alt="" class="profile-table">
+          {% else %}
+          <img src="{% static 'img/default.jpg' %}" class="profile-table">         
+          {% endif %}
+          <div class="user-info">
+            <p class="name">{{r.user.username}}</p>
+            <p class="score"><i class='bx bx-coin-stack'></i>{{r.score}}</p>
+          </div>
+        </div>
+          {% endfor %}
+       
+        </div>
+      </div>
+
+
+
+   </section>
+   <section class="ad">
+    <div id="myModal" class="ads-container">
+
+        <!-- Modal content -->
+        <div class="ad-content">
+            <div id="countdown-number">60</div>
+            <svg class="svg">
+                <circle r="18" cx="20" cy="20"></circle>
+              </svg>
+            <i class='bx bx-x close-ad' ></i>
+            <div class="img-container">
+                <img src="{{Gold.image.url}}" alt="">
+            </div>
+            <div class="logo">
+
+            </div>
+              <h1>{{Gold.name}}</h1>
+              <p>{{Gold.text}}</p>
+              <div class="btn-container">
+                <a href="{{Gold.cta_link}} " target="blank" class="btn_cta">{{Gold.cta}}</a>
+              </div>
+        </div>
+
+      </div>
+    </section>
+      {% else %}
+      <section class="phone_numInput">
+        <div class="phoneInput-container">
+            <h1>Enter your phone number</h1>
+            <form action="/add_phone" method="POST">
+                {% csrf_token %}
+                <div>
+                    <img src="{% static 'img/et.svg' %}" alt="">
+                    <p class="country-code">+251</p>
+                    <input type="text" class="phone_number" name="phonenumer">
+                </div>
+                <button type="submit" class="phonebutton">Continue <i class='bx bx-right-arrow-alt'></i></button>
+            </form>
+        </div>
+    </section>
+      {% endif %}
+      {% else %}
+      <a href="{% url 'accounts_login' %}">Login</a>
+      {% endif %}
+    </main>
+    
+</body>
+<script src="{% static 'JS/main.js' %}"></script>
+<script>
+  const dropdownBtn = document.getElementById("profiledropdown-large")
+  const dropdown = document.getElementById("userprofile")
+  dropdownBtn.addEventListener("click", function(){
+    console.log("code works till this instance.")
+    dropdown.classList.toggle("visibleprofile")
+  })
+  const userResult = document.querySelectorAll(".card")
+  const userRank = document.querySelectorAll(".card .rank")
+  console.log(userRank[0])
+  console.log(userRank[1])
+  console.log(userRank.length - (userRank.length - 1))
+
+    for(x in userResult){
+      if(userResult[x,0] == userResult[0]){
+        userRank[0].classList.add("first")
+        userRank[0].innerText = "1"
+      }
+      if(userResult[x,1] == userResult[1]){
+        userRank[1].classList.add("second")
+        userRank[1].innerText = "2"
+      }
+      if(userResult[x,2] == userResult[2]){
+        userRank[2].classList.add("third")
+        userRank[2].innerText = "3"
+      }
+    }
+const close_btn = document.getElementById("close-btn")
+const popup = document.querySelector("#myModal")
+const uploadImgBtn = document.querySelector("#upload")
+const popupModal = document.querySelector("#popupmodal")
+const closeUpload = document.querySelector("#closeUploadPopup")
+const editProfile = document.querySelector("#editProfile")
+uploadImgBtn.addEventListener("click", function(){
+    popupModal.style.display = "block"
+})
+closeUpload.addEventListener("click", function(){
+    popupModal.style.display = "none"
+})
+editProfile.addEventListener("click", function(){
+    popupModal.style.display = "block"
+})
+var countdownNumberEl = document.getElementById('countdown-number');
+var countdown = {{Gold.duration}};
+var svgCircle = document.querySelector(".svg circle")
+var closeAdButton = document.querySelector(".close-ad")
+var adPopup = document.querySelector(".ad")
+
+countdownNumberEl.textContent = countdown;
+
+setInterval(function() {
+    countdown = -- countdown
+    if (countdown <= 0){
+        countdownNumberEl.style.display = "none"
+        closeAdButton.style.opacity = "1"
+        closeAdButton.style.display = "block"
+        svgCircle.style.display = "none"
+        countdown = "0"
+        closeAdButton.addEventListener("click", function(){
+            adPopup.style.display = "none"
+        })
+    }
+    else if(countdown < 10){
+        countdown = "0" + countdown
+    }
+    countdownNumberEl.textContent = countdown;
+
+
+}, 1000);
+
+</script>
+</html>

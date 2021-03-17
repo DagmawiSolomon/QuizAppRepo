@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--====styling=====-->
+  <link rel="stylesheet" href="{% static 'css/authentication.css' %}">
+  <!--===Poppins===-->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <!--======Boxicons======-->
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+  <title>Quiz web app</title>
+</head>
+<body>
+  <a href="{% url 'home' %}" class="back"><i class='bx bx-arrow-back'></i></a>
+  <section class="left">
+    <img src="{% static 'img/login.svg' %}" alt="">
+  </section>
+  <section class="right">
+    {% load i18n %}
+    {% load account socialaccount %}
+    
+    
+    {% block content %}
+    
+    <h1>{% trans "Log In" %}</h1>
+    
+    {% get_providers as socialaccount_providers %}
+    <p>{% blocktrans %}If you have not created an account yet, then please
+    <a href="{{ signup_url }} " class="link">sign up</a> first.{% endblocktrans %}</p>
+
+    
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      <div class="form__input">
+        {{form.login}}
+      </div>
+      <div class="form__input">
+        {{form.password}}
+      </div>
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <ul class="error">
+        {{form.non_field_errors}}
+      </ul>
+      
+      <button class=" button" type="submit">{% trans "Sign In" %}</button>    
+      <div class="footer_links">
+        <a class="link" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+      </div>
+    </form>
+    <div class="login-or">{% trans 'or' %}</div>
+     <div class="socialaccount_ballot">
+
+      <ul class="socialaccount_providers">
+        <a href = "{% url 'facebook_login' %}"><i class='bx bxl-facebook'></i></a>
+        <a href = "{% url 'instagram_login' %}"><i class='bx bxl-instagram' ></i></a>
+        <a href = "{% url 'telegram_login' %}"><i class='bx bxl-telegram' ></i></a>
+        <a href = "{% url 'google_login' %}"><i class='bx bxl-google' ></i></a>
+      </ul>
+
+    </div>
+
+    {% include "socialaccount/snippets/login_extra.html" %}
+    {% endblock %}
+    
+  </section>
+<script>
+  google = documents.querySelectorall(
+</script>
+</body>
+</html>
+

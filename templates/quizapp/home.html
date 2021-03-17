@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+{% load i18n %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--====styling=====-->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/statistics.css'%}">
+    <!--===Poppins===-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <!--======Boxicons======-->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <title>Quiz web app</title>
+</head>
+<body>
+
+    <section class="hero">
+            <header>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="{% url 'home' %}" class="nav__logo">Logo</a></li>
+                    </ul>
+                    <div class="nav__menu" id="nav-menu">
+                        <ul class="nav__list">
+                            {% if request.user.is_authenticated %}
+                        
+                            <li id="profiledropdown-large">
+                                <div class="div">
+                                    {% if result.profile %}
+                                        <img src="{{result.profile.url}}" >
+                                    {% else %}
+                                        <img src="{% static 'img/default.jpg' %}">
+                                    {% endif %}
+                                </div>
+                            </li>
+                            <li id="profiledropdown-small">
+                                <div class="div">
+                                    {% if result.profile%}
+                                        <img src="{{result.profile.url}}" >
+                                    {% else %}
+                                        <img src="{% static 'img/default.jpg' %}">
+                                    {% endif %}
+                                <div class="editCircle" id="editProfile">
+                                    <i class='bx bxs-pencil' ></i>
+                                </div>
+                            </li>
+                            <li class="nav__item username"><p>{{request.user.username}}</p></li>
+                            <li class="nav__item useremail"><p>{{request.user.email}}</p></li>
+                            <li class="nav__item navigation hidden-nav-item"><a href="{% url 'home' %}" class="nav_link "><i class='bx bx-home-alt'></i>Home</a></li>
+                            <li class="nav__item navigation" id="leaderoard"><a href="{% url 'leaderboard' %}" class="nav_link "><i class='bx bx-trophy' id="hidden" ></i>Leaderboard</a></li>
+                            <li class="nav__item navigation hidden-nav-item "><a href="{% url 'account_logout' %}" class="nav_link "><i class='bx bx-log-out' ></i>Logout</a></li>
+                        <div class="userprofile" id="userprofile">
+                          <div class="img">
+                            {% if result.profile %}
+                            <img src="{{result.profile.url}}" >
+                            {% else %}
+                            <img src="{% static 'img/default.jpg' %}">
+                            {% endif %}
+                            <div class="upload-img">
+                              <p id="upload">+</p>
+                            </div>
+                          </div>
+                          <h4>{{ request.user }}</h4>
+                          <p class="email">{{request.user.email}}</p>
+                          <div class="button_container">
+                            <a href="{% url 'account_logout' %}">Logout</a>
+                          </div>
+                        </div>
+            
+                        {% else%}
+                        <div class="unauth">
+                            <li class="nav__item" id="login-cont"><a href="{% url 'account_login' %}" class="nav_link login">Login</a></li>
+                            <li class="nav__item"><a href="{% url 'account_signup' %}" class="nav_link btn">Create an account</a></li>
+                        </div>
+                        {% endif %}
+                    </ul>
+                </div>
+                <ul class="nav__toogle" id="nav-toggle" >
+                    <i class='bx bxs-grid '></i>
+                </ul>
+    
+            </nav>
+            <div class="modal" id="popupmodal">
+                <div class="modal-content">
+                    <h1 class="modal-title">Account Settings</h1>
+                    <div class="userprofilearea">
+                        
+                        <div class="userProfileImg">
+                            
+                            {% if result.profile %}
+                            <img src="{{result.profile.url}}" alt="">
+                            {% else %}
+                            <img src="{% static 'img/default.jpg' %}" alt="">
+                            {% endif %}
+                        </div>
+                        <form method="post" enctype="multipart/form-data" action = "edit_profile/">
+                            {% csrf_token %}
+                            <div class="upateInfomodal">
+                                <input type="text" name="username" placeholder="{{result.user.username}}">
+                                <input type="text" name="email" placeholder="{{result.user.email}}">
+                                <input type="text" name="phonenumber" placeholder="0{{result.phone_number}}">
+                        
+                            </div>
+                            <input type="file" name="profile_upload" class="custom-file-input" id="filefield">
+                        
+                            <div class="updatebutton_container">
+                                <button type="submit">Save</button>
+                            </div>
+                        </form>
+                      <i class='bx bx-x' id="closeUploadPopup"></i>
+                    </div>
+    
+    
+                </div>
+            </div>
+            </header>
+            <section class="ads">
+                <div class="ad-silver">
+                    <div class="img">
+                        <img src="{{silver.image.url}}" alt="">
+                    </div>
+                    <div class="description">
+                        <h2 class="data">{{silver.name}} <span class="close"><i class='bx bx-x'></i></span></h2>
+                        <p class="desc">{{silver.text}}</p>
+                        <a href="{{silver.cta_link}}" target="blank">{{silver.cta}}</a>
+                    </div>
+                </div>
+            </section>
+            {% if request.user.is_authenticated %}
+            {% if result.phone_number  %}
+            <section class="hero-body section">
+                <div class="hero__img ">
+                    <img src="{% static 'img/Questions.svg' %}" alt="">
+                </div>
+                <div class="hero__data">
+                    <h1 class="home__welcome" id="message">Next quiz starts in</h1>
+                    <section class="countdown-container">
+                        <table>
+                            <tr class="countdown" id="countdown">
+                                <td id="days"></td>
+                                <td id="hours"></td>
+                                <td id="minutes"></td>
+                                <td id="seconds"></td>
+                            </tr>
+                            <tr class="title">
+                                <td>Days</td>
+                                <td>Hours</td>
+                                <td>Minutes</td>
+                                <td>Seconds</td>
+                            </tr>
+                        </table>
+                    </section>
+                    <div class="hero__btns" id="share_register_btn">
+                        <button class="button " id="copy-btn"><i class='bx bxs-share '></i>Share</button>
+                        <button class="button-light" ><i class='bx bx-bell'></i>Get notified</button>
+
+
+                    </div>
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                        <h1>Some rules of this quiz</h1>
+                        <p>1. You will have only <span>{{quiz.time_allowed}} seconds</span> for each question.</p>
+                        <p>2. Once you select your answer, it can't be undone.</p>
+                        <p>3. You can't select any option once time goes off.</p>
+                        <p>4. You can't exit from the Quiz while you're playing.</p>
+                        <p>5. You'll get points on the basis of your correct answers.</p>
+                        <div class ="button_container">
+                            <a href="" id="close-btn">Close</a>
+                            <a href="{% url 'quiz' quiz.id %}">Continue</a>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div class="hero__btns" id="play_btn">
+                        {% if result.completed == False %}
+                        <a href="{% url 'quiz' quiz.id %}" class="button" id="play" style="width:100px;"><i class='bx bx-play'></i>Play</a>
+                        <button class ="button-light" id="about" style="width:130px;"><i class='bx bx-info-circle'></i>About</button>
+                        {% elif result.completed == True %}
+                        <h1 class="completed-message"><i class='bx bx-info-circle' ></i>Quiz completed</h1>
+                        {% endif %}
+                    </div>
+                    <div class="copied-msg-container">
+                        <p id="copied-msg">Copied!</p>
+                    </div>
+                </div>
+            </section>
+            {% else  %}
+            <section class="phone_numInput">
+                <div class="phoneInput-container">
+                    <h1>Enter your phone number</h1>
+                    <form action="/add_phone" method="POST">
+                        {% csrf_token %}
+                        <div>
+                            <img src="{% static 'img/et.svg' %}" alt="">
+                            <p class="country-code">+251</p>
+                            <input type="text" class="phone_number" name="phonenumer">
+                        </div>
+                        <button type="submit" class="phonebutton">Continue <i class='bx bx-right-arrow-alt'></i></button>
+                    </form>
+                </div>
+            </section>
+            {% endif %}
+            {% else %}
+            <section class="hero-body" >
+                <div class="hero__img">
+                    <img src="{% static 'img/winners.svg' %}" alt="">
+                </div>
+                <div class="hero__data">
+                    <h1 class="hero__title">Welcome</h1>
+                    <p class="hero__description">Take quizes and win free money!</p>
+                    <div class="hero__btns">
+                        <a href="{% url 'account_signup' %}" class="button" style="width:100px;">Get started</a>
+                        <a href="#how_it_works"  class="button-light" style="width:100px;">Learn more</a>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+
+            {% else %}
+            <section class="how_it_works" id="how_it_works">
+                <h1>How it works</h1>
+                <div class="content_container">
+                    <div class="container_body">
+                        <img src="{% static 'img/bxs-user.svg' %}" alt="">
+                        <h4>Step 1</h4>
+                        <h3>Create an account</h3>
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus facilis, enim voluptates unde nam repellat veritatis! Similique suscipit nemo dignissimos nam, voluptates aut a amet architecto obcaecati laboriosam culpa doloribus.</p>
+                    </div>
+                    <div class="container_body">
+                        <img src="{% static 'img/bxs-badge-check.svg' %}" alt="">
+                        <h4>Step 2</h4>
+                        <h3>Sign In</h3>
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus facilis, enim voluptates unde nam repellat veritatis! Similique suscipit nemo dignissimos nam, voluptates aut a amet architecto obcaecati laboriosam culpa doloribus.</p>
+                    </div>
+                    <div class="container_body">
+                        <img src="{% static 'img/bxs-trophy.svg' %}" alt="">
+                        <h4>Step 3</h4>
+                        <h3>Start playing</h3>
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus facilis, enim voluptates unde nam repellat veritatis! Similique suscipit nemo dignissimos nam, voluptates aut a amet architecto obcaecati laboriosam culpa doloribus.</p>
+                    </div>
+                </div>
+            </section>
+                        <!--===== FOOTER =====-->
+            <footer class="footer section" >
+                <div class="footer__container ">
+                    <div class="footer__box">
+                        <h3 class="footer__title">Logo</h3>
+                    <!-- <p class="footer__description">New collection of shoes 2020.</p>-->
+                    </div>
+            
+                    <div class="footer__box">
+                        <h3 class="footer__title">Explore</h3>
+                    <ul>
+                        <li><a href="#home" class="footer__link">Home</a></li>
+                        <li><a href="#feautured" class="footer__link">Login</a></li>
+                        <li><a href="#women" class="footer__link">Create an account</a></li>
+            
+                    </ul>
+                    </div>
+            
+                    <div class="footer__box">
+                        <h3 class="footer__title">Support</h3>
+                    <ul>
+                        <li><a href="#" class="footer__link">Product Help</a></li>
+                        <li><a href="#" class="footer__link">Customer Care</a></li>
+                        <li><a href="#" class="footer__link">Athorized Sevices</a></li>
+                    </ul>
+                    </div>
+            
+                    <div class="footer__box">
+                        <a href="" class="footer__social"><i class='bx bxl-facebook' ></i></a>
+                        <a href="" class="footer__social"><i class='bx bxl-instagram-alt'></i></a>
+                        <a href="" class="footer__social"><i class='bx bxl-telegram'></i></a>
+                        <a href="" class="footer__social"><i class='bx bxs-envelope' ></i></a>
+                    </div>
+            
+                </div>
+            
+            </footer>
+            {% endif %}
+    </section>
+
+
+ 
+
+</body>
+<script src="{% static 'JS/main.js' %}"></script>
+<script src="{% static 'JS/translation.js' %}"></script>
+<script type="text/javascript">
+(function () {
+  const second = 1000,
+        minute = second * 60,
+        hour = minute * 60,
+        day = hour * 24;
+
+  let birthday = "{{start_month}} {{start_day}}, {{start_year}} {{start_hour}}:{{start_minute}}:{{start_second}}",
+      countDown = new Date(birthday).getTime(),
+      x = setInterval(function() {
+
+        let now = new Date().getTime(),
+            distance = countDown - now;
+
+        document.getElementById("days").innerText = Math.floor(distance / (day)),
+          document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+          document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+          document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+          document.getElementById("play_btn").style.display = "none"
+
+        //do something later when date is reached
+        if (distance < 0) {
+          let headline = document.getElementById("message"),
+              countdown = document.getElementById("countdown"),
+              content = document.getElementById("content");
+               document.getElementById("play_btn").style.display = "block"
+               document.getElementById("share_register_btn").style.display = "none"
+          headline.innerText = "The Quiz ends in";
+
+          let end = "{{end_month}} {{end_day}}, {{end_year}} {{end_hour}}:{{end_minute}}:{{end_second}}",
+          countDown = new Date(end).getTime(),
+          y = setInterval(function() {
+
+            let now = new Date().getTime(),
+                time_left = countDown - now;
+
+            document.getElementById("days").innerText = Math.floor(time_left / (day)),
+              document.getElementById("hours").innerText = Math.floor((time_left % (day)) / (hour)),
+              document.getElementById("minutes").innerText = Math.floor((time_left % (hour)) / (minute)),
+              document.getElementById("seconds").innerText = Math.floor((time_left % (minute)) / second);
+              clearInterval(x);
+              if(time_left < 0){
+                let headline = document.getElementById("message");
+                countdown = document.getElementById("countdown"),
+                headline.innerText = "No quiz"
+                document.getElementById("days").innerText = "-",
+                document.getElementById("hours").innerText = "-",
+                document.getElementById("minutes").innerText ="-",
+                document.getElementById("seconds").innerText = "-";
+                clearInterval(y);
+              }
+          }, 0)
+
+          //seconds
+        }
+
+      }, 0)
+  }());
+const close_btn = document.getElementById("close-btn")
+const open_btn = document.getElementById("about")
+const popup = document.querySelector("#myModal")
+const uploadImgBtn = document.querySelector("#upload")
+const popupModal = document.querySelector("#popupmodal")
+const closeUpload = document.querySelector("#closeUploadPopup")
+const editProfile = document.querySelector("#editProfile")
+uploadImgBtn.addEventListener("click", function(){
+    popupModal.style.display = "block"
+})
+closeUpload.addEventListener("click", function(){
+    popupModal.style.display = "none"
+})
+editProfile.addEventListener("click", function(){
+    popupModal.style.display = "block"
+})
+open_btn.addEventListener("click", function(){
+    popup.style.display = "block"
+})
+close_btn.addEventListener("click", function(){
+    popup.style.display = "none"
+})
+
+
+</script>
+<script>
+  const dropdownBtn = document.getElementById("profiledropdown-large")
+  const dropdown = document.getElementById("userprofile")
+  dropdownBtn.addEventListener("click", function(){
+    dropdown.classList.toggle("visibleprofile")
+  })
+
+
+</script>
+</html>

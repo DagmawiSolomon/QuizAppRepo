@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--====styling=====-->
+    <link rel="stylesheet" href="{% static 'css/quiz.css' %}">
+    <!--===Poppins===-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+<!--======Boxicons======-->
+<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+<!--=========Jquert=======-->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+</head>
+{% if request.user.is_authenticated %}
+{% if res.completed == False %}
+<body id ="body">
+    <section class="header">
+        <a href="{% url 'home' %}"><i class='bx bx-left-arrow-alt'></i></a>
+        <div id="countdown">
+            <div id="countdown-number">09</div>
+            <svg class="svg">
+              <circle r="18" cx="20" cy="20"></circle>
+            </svg>
+          </div>
+          <ul>
+              <li>Score</li>
+              <li id="score">{{result}}</li>
+          </ul>
+        </div>
+    </section>
+
+    <section class="body-container">
+        <h1>Question {{ page_obj.number }}<span> /  {{ page_obj.paginator.count }}</span></h1>
+        <section class="questions-container">
+            {% for q in page_obj%}
+                <a href="" class="next"></a>
+                {% if page_obj.has_next %}
+                <form action="?page={{ page_obj.next_page_number }}" method="post" id="quizForm">
+                {% else %}
+                <form action="" method="post">
+                {% endif %}
+                        {% csrf_token %}
+                        <h3 id ="question">{{q}}?</h3>
+                            <div class="choice-container">
+                                <div class="custom-choose">
+                                    {% for choice in q.answer_set.all %}
+                                    <li>
+                                        <input type="radio" id="choice-{{choice.id}}"  name="choice" value="{{choice.text}}"  >
+                                        {% if choice.correct %}
+                                        <label for="choice-{{choice.id}}" class="choices_btn" id="correct">
+                                        {{choice.text}}
+                                        </label>
+                                        {% else %}
+                                        <label for="choice-{{choice.id}}" class="choices_btn" id="wrong" >
+                                            {{choice.text}}
+                                        </label>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                           <input type="text" name="response-time" value="" id="response-time">
+                        <div class="btn-container">
+                            <div class="pagination">
+                                <span class="step-links">
+                                    {% if page_obj.has_next %}
+                                    <button type="submit" class="next">Next<i class='bx bx-right-arrow-alt'></i></button>
+                                    {% else %}
+                                    <a href="{% url 'home' %}">
+                                        <input type="submit" name="input" value="Finish" class="next"/></i>
+                                      </a>
+                                    {% endif %}
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </form>
+                </form>
+            {% endfor %}
+
+
+
+        </section>
+    </section>
+</body>
+{% elif res.completed == True %}
+<div class="blocked-page">
+    <h1>You already attempted this quiz!</h1>
+    <a href="{% url 'home' %}" class="button-light"><i class='bx bx-arrow-back' ></i>Home</a>
+</div>
+{% else %}
+<H1>unkown error</H1>
+{% endif %}
+{% else %}
+<body class = "unauthenticated" style ="margin:1rem">
+<h1>Sorry, you are not allowed to view this page!</h1>
+<a class="button" href="{% url 'account_login' %}">Login</a>
+</body>
+{% endif %}
+<script>
+    var countdownNumberEl = document.getElementById('countdown-number');
+    var countdown = {{time_allowed}};
+    var btn = document.querySelectorAll('.choices_btn');
+    var svgCircle = document.querySelector(".svg circle")
+    countdownNumberEl.textContent = countdown;
+    setInterval(function() {
+       countdown = -- countdown
+        if (countdown <= 0){
+            document.getElementById("quizForm").submit()
+             countdown = "  "
+             for(i = 0; i < btn.length; i++){
+                btn[i].classList.add("disabled");
+                btn[i].style.pointerEvents = "none"
+                btn[i].style.border = "1px solid #f8f4f9"
+             }
+             svgCircle.style.animation = "none"
+
+        }
+        else if(countdown < 10){
+            countdown = "0" + countdown
+            countdownNumberEl.style.position = "absolute"
+            countdownNumberEl.style.left = "27px"
+        }
+        countdownNumberEl.textContent = countdown;
+
+
+    }, 1000);
+
+var choices = document.querySelector(".custom-choose")
+var choices_li = choices.getElementsByTagName('li')
+var choices_count = choices.getElementsByTagName('li').length
+var form = document.getElementById("quizForm")
+var radios = document.getElementsByName("choice");
+var correct = document.querySelector(".correct")
+var btn = document.querySelectorAll('.choices_btn');
+var finish_btn = document.getElementById('finish')
+document.querySelectorAll('.choices_btn').forEach(item => {
+    item.addEventListener('click', event => {
+
+            if (item.id == "correct"){
+                item.style.backgroundColor =" #d4edda"
+                item.style.color = "#155724"
+                item.style.border = "1px solid #c3e6cb"
+            }
+            else if(item.id="wrong"){
+                item.style.backgroundColor =" #f8d7da"
+                item.style.color = "#721c24"
+                item.style.border = " 1px solid #f5c6cb"
+            }
+
+
+            for(i = 0; i < btn.length; i++){
+                btn[i].classList.add("disabled");
+                btn[i].style.pointerEvents = "none"
+                btn[i].style.border = "1px solid #f8f4f9"
+
+            }
+
+})
+})
+    var seconds = 00;
+    var tens = 00;
+    var responseTime =  document.getElementById("response-time")
+    var buttonStop = document.querySelector('.custom-choose');
+
+    var Interval ;
+
+    window.onload = function() {
+
+       clearInterval(Interval);
+       Interval = setInterval(startTimer, 10);
+    }
+
+      buttonStop.onclick = function() {
+         clearInterval(Interval);
+    }
+    function startTimer () {
+      tens++;
+      responseTime.value = seconds
+      if (tens > 99) {
+        seconds++;
+        tens = 0;
+
+      }
+    }
+    x = document.querySelector('.custom-choose')
+</script>
+<script>
+    $("body").on("submit", "form", function() {
+        $(this).submit(function() {
+            return false;
+        });
+        return true;
+    });
+    $(document).ready(function() {
+        $("form").submit(function() {
+            $(this).submit(function() {
+                return false;
+            });
+            return true;
+        });     
+    });
+</script>
+</html>

@@ -1,0 +1,264 @@
+
+/*result*/
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "poppins", sans-serif;
+    overflow-x: hidden;
+}
+.result{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+
+}
+img{
+    max-width:100%;
+    display: block;
+}
+.img_result img{
+    width: 150px;
+    margin: auto;
+    padding: 1rem;
+    text-align: center;
+}
+.result h1,p,h3{
+    text-align: center;
+    margin: 0;
+    margin-bottom: 1.2rem;
+}
+.bxs-coin-stack{
+    margin: 0 0.25rem;
+    font-size: 1.5rem;
+    position: relative;
+    top: 4px;
+}
+p{
+    font-weight: 700;
+}
+a{
+    text-decoration: none;
+}
+.btns{
+    text-align: center;
+    margin: auto;
+}
+
+.button i{
+    margin-right: 0.4rem;
+}
+.button-light i{
+    margin-right: 0.4rem;
+    font-size: 20px;
+    position: relative;
+    top: 3px;
+}
+.button-light{
+    position: relative;
+    display: block;
+    color:#3C3CC2;
+    padding: 0.7rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: 0.3s;
+    border: 2px solid #3C3CC2;
+    width: 150px;
+    text-align: center;
+    margin-bottom: 1rem;
+    
+}
+/* The Modal (background) */
+.ads-container {
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: #282828; /* Fallback color */
+    background-color: #282828; /* Black w/ opacity */
+  }
+
+  /* Modal Content/Box */
+  .ad-content {
+    background-color: #fefefe;
+    position: relative;
+    flex-direction: row;
+    margin: 20% auto; /* 15% from the top and centered */
+    padding: 20px;
+    background-color: #282828;
+    border: 1px solid #282828;
+    width: 90%; /* Could be more or less, depending on screen size */
+    height:90%;
+  }
+  .ad-content h1{
+      margin:4rem 0rem 2rem 0rem;
+      color: #fff;
+      font-weight: 400;
+      font-size: 17pt;
+      text-align: center;
+  }
+  .ad-content p{
+      margin:2rem auto;
+      color: #FFFFFF;
+      font-weight: 400;
+  }
+  .close-ad{
+      display: none;
+      opacity: 0;
+      position: absolute;
+      top:-65px;
+      left:12px;
+      font-size: 25pt;
+      color: #FFFFFF;
+      font-weight: 400;
+      margin: 1rem;
+  }
+  .img-container{
+      width:95%;
+      margin: auto;
+      background-color: #282828;
+  }
+  .btn-container{
+      display:flex;
+      justify-content: center;
+  }
+  .ad-content .btn_cta{
+    margin: 0 5px;
+    padding: 0.5rem 1.5rem;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #3C3CC2;
+    background-color:#3C3CC2;
+    color: #fff;
+    transition: all 0.3s ease;
+    text-align:center
+  }
+  #countdown {
+    position: relative;
+    margin: auto;
+    margin-top: 100px;
+    height: 40px;
+    width: 70px;
+    text-align: center;
+  }
+
+  #countdown-number {
+    color: #141414;
+    display: inline-block;
+    line-height: 40px;
+    position: absolute;
+    top:-68px;
+    left:20.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin:1rem;
+  }
+
+  svg {
+    position: absolute;
+    top: -74px;
+    left: 3px;
+    width: 45px;
+    height: 45px;
+    margin:1rem;
+    transform: rotateY(-180deg) rotateZ(-90deg);
+  }
+
+  svg circle {
+    stroke-dasharray: 113px;
+    stroke-dashoffset: 0px;
+    stroke-linecap: round;
+    stroke-width: 4px;
+    stroke: #FFFFFF;
+    fill: none;
+    animation: countdown 15s linear infinite forwards;
+  }
+  @keyframes countdown {
+    from {
+      stroke-dashoffset: 0px;
+    }
+    to {
+      stroke-dashoffset: 113px;
+    }
+  }
+
+@media screen and (min-width:768px){
+    .button-light{
+        display: inline-block;
+    }
+    .img-container{
+        width:70%;
+        display: flex;
+        margin: auto;
+        background-color: #282828;
+    }
+    .close-btn{
+        position: absolute;
+        top:-80px;
+        left:10px;
+    }
+    svg{
+        position: absolute;
+        top:-80px;
+        left:10px;
+    }
+    #countdown-number{
+        position: absolute;
+        top:-74px;
+        left:27px;
+    }
+    .ad-content{
+        margin:12% auto;
+    }
+
+}
+@media screen and (min-width:1030px){
+    .button-light{
+        display: inline-block;
+    }
+    .img-container{
+        width:60%;
+        display: flex;
+        justify-content: center;
+        margin: auto;
+        background-color: #282828;
+    }
+    .img-container img{
+        width: 50%;
+    }
+    .close-ad{
+        position: absolute;
+        top:-39px;
+        left:27px;
+    }
+    svg{
+        position: absolute;
+        top:-45px;
+        left:10px;
+    }
+    #countdown-number{
+        position: absolute;
+        top: -39px;
+        left: 27px;
+    }
+    .ad-content{
+        margin:6% auto;
+    }
+    .result{
+    margin:5rem;
+    }
+
+}
+@media print{
+    .btns{
+        display: none;
+    }
+}

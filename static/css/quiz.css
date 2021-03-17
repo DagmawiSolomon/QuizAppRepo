@@ -1,0 +1,363 @@
+
+html{
+    overflow-x: hidden;
+ }
+ a{
+   color:#141414;
+   text-decoration: none;
+ }
+
+ body{
+     margin: 0;
+     padding: 0;
+     font-family: "poppins", sans-serif;
+     overflow-x:hidden ;
+ }
+ .disabled{
+   pointer-events: none;
+   background-color: #F6F4F5;
+ }
+
+ svg{
+   position: fixed;
+ }
+ li{
+ list-style: none;
+ }
+ .header{
+   display: flex;
+   justify-content: space-between;
+   margin: 1rem;
+   height: 80px;
+ }
+ .header i{
+   font-size: 20pt;
+   margin: 0.5rem;
+ }
+ .header ul{
+   position: relative;
+   top:-20px;
+   text-align: center;
+ }
+ .header i{
+   cursor: pointer;
+ }
+ #score{
+   font-weight: 700;
+ }
+ .body-container{
+     width: 100%;
+     margin: auto;
+     padding: 0.5rem;
+ }
+ .body-container h1{
+     text-align: start;
+     margin: 0.6rem 1rem;
+
+ }
+ .body-container span{
+   font-size: 12pt;
+ }
+.button{
+    position: relative;
+    display: inline-block;
+    background-color:#3C3CC2;
+    color:  #fff;
+    padding: 0rem 1rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: 0.3s;
+    border: 2px solid #3C3CC2;
+    width: fit-content;
+    text-align: center;
+    font-family: "poppins",sans-serif;
+    font-size: 16px;
+}
+.button_container{
+  width: 82%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem ;
+}
+
+.button_container button:nth-child(2){
+  margin: 0 5px;
+  width: 100px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  border: 2px solid #3C3CC2;
+  color:#3C3CC2;
+  transition: all 0.3s ease;
+  text-align:center;
+  padding: 10px;
+  background-color: #fff;
+  font-family: "poppins", sans-serif;
+}
+.button_container button:nth-child(1){
+  margin: 0 5px;
+  width: 100px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  color:#fff;
+  background-color: #3C3CC2;
+  border:1px solid #3C3CC2;
+  transition: all 0.3s ease;
+  text-align:center;
+  padding: 10px;
+  font-family: "poppins", sans-serif;
+}
+#response-time{
+  display: none;
+}
+ .question{
+     padding: 5px;
+     margin: 2rem 0;
+     width: 100%;
+
+
+ }
+ #question{
+    margin:1rem .5rem;
+    text-align: left;
+    font-size: 14pt;
+
+    font-weight: 600;
+ }
+ .progress{
+   display: flex;
+   margin: 0.5rem;
+ }
+ .progress i{
+   display: none;
+ }
+ .progress div{
+   width:calc(7% - 0.5rem);
+   margin: 0.5rem;
+   height: 5px;
+   border-radius: 5px;
+   background-color: #ababab;
+ }
+ .wright{
+   background-color:#00d378;
+ }
+ .choice-container{
+     margin: 1rem 0;
+ }
+ .choice-container li{
+     font-size: 14pt;
+     font-weight:300 ;
+     margin: 1rem 0.5rem;
+     display: flex;
+     justify-content: center;
+     width: 100%;
+
+     border-radius: 10px;
+     position: relative;
+
+ }
+ .choice-container li input{
+   position: absolute;
+   top:25%;
+   right:25px;
+
+ }
+ .choices_btn{
+   display: flex;
+   justify-content:center;
+   padding: 0.5rem;
+ }
+
+ .custom-choose{
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+ }
+ .custom-choose input[type='radio'],.custom-choose input[type='checkbox']
+ {
+     display: none;
+ }
+ .custom-choose input[type='radio'] + label,.custom-choose input[type='radio']:not(checked) + label
+ ,.custom-choose input[type='checkbox'] + label,.custom-choose input[type='checkbox']:not(checked) + label
+ {
+     padding: 12px;
+     border: solid 2px #141414;
+     border-radius: 10px;
+     text-align: center;
+     font-size: 10.5pt;
+     margin-right: 31px;
+     transition: .4s;
+     width: 100%;
+ }
+ .custom-choose input[type='radio']:checked + label,
+ .custom-choose input[type='checkbox']:checked + label
+ {
+     position: relative;
+     border: solid 2px #444444;
+     background: #444444;
+     color: #FFF;
+     transition: .4s;
+ }
+ .custom-choose input[type='radio']:checked + label::before,
+ .custom-choose input[type='checkbox']:checked + label::before
+ {
+     content:'';
+     position: absolute;
+     left: 16px;
+ }
+ #countdown {
+   position: relative;
+   margin: auto;
+   margin-top: 100px;
+   height: 40px;
+   width: 70px;
+   text-align: center;
+ }
+
+ #countdown-number {
+   color: #141414;
+   display: inline-block;
+   line-height: 40px;
+   position: absolute;
+   top:-98px;
+   left:29px;
+   font-weight: 600;
+ }
+
+ svg {
+   position: absolute;
+   top: -104px;
+   right: 14px;
+   width: 45px;
+   height: 45px;
+   transform: rotateY(-180deg) rotateZ(-90deg);
+ }
+
+ svg circle {
+   stroke-dasharray: 113px;
+   stroke-dashoffset: 0px;
+   stroke-linecap: round;
+   stroke-width: 4px;
+   stroke: #3C3CC2;
+   fill: none;
+   animation: countdown 15s linear infinite forwards;
+
+ }
+ .btn{
+   width: 80%;
+   margin: 0 1rem;
+
+ }
+ .pagination{
+   display:flex;
+   justify-content: flex-end;
+ }
+ .next{
+   background-color: #FFF;
+   color: #141414;
+   border: none;
+   margin: 0.5rem 0;
+   font-family: "poppins", sans-serif;
+   font-size: 14pt;
+   outline: none;
+   cursor: pointer;
+   margin: 1rem 1rem;
+
+ }
+ .next i{
+   position: relative;
+   top:2px;
+ }
+
+ @keyframes countdown {
+   from {
+     stroke-dashoffset: 0px;
+   }
+   to {
+     stroke-dashoffset: 113px;
+   }
+ }
+
+ @media screen and (min-width:768px){
+   .body-container{
+     width: 85%;
+     margin: 3rem auto;
+   }
+   .question{
+     margin: 1rem 0;
+   }
+   .progress div{
+     width:25px;
+     margin: .5rem;
+     height: 25px;
+     border-radius: 50%;
+     position: relative;
+   }
+   .progress i{
+     display: flex;
+     color: #fff;
+     justify-content: center;
+     position: absolute;
+     top:16%;
+     left: 19%;
+   }
+   #question{
+       font-size: 16pt;
+ }
+ }
+ @media screen and (min-width:1020px){
+   body{
+     height: 100%;
+   }
+   .body-container{
+     width: 70%;
+     height: 100%;
+     margin: 4rem auto;
+   }
+   .custom-choose input[type='radio'] + label,.custom-choose input[type='radio']:not(checked) + label
+ ,.custom-choose input[type='checkbox'] + label,.custom-choose input[type='checkbox']:not(checked) + label
+ {
+   margin-right:0 ;
+     width: 60%;
+     font-size:16pt;
+ }
+ .choice-container li{
+   left: -70px;
+ }
+
+ .progress div{
+   font-size: 1.4rem;
+   width: 30px;
+   height: 30px;
+   padding: 5px;
+   display: flex;
+   margin: 1rem 0.5rem;
+
+ }
+ .progress i{
+   position: absolute;
+   top:19%;
+   left: 22%;
+ }
+ .btn{
+     width: 85%;
+     margin: 2rem 1rem;
+
+ }
+
+ .button{
+    width: 150px;
+    padding: 0.9rem;
+}
+#question{
+    font-size: 16pt;
+    margin-left: 1rem
+}
+ }

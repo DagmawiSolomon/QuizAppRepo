@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--====styling=====-->
+    <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    <!--===Poppins===-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+<!--======Boxicons======-->
+<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <section class="result">
+        <section class="ad">
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div id="countdown-number">60</div>
+                    <svg class="svg">
+                        <circle r="18" cx="20" cy="20"></circle>
+                      </svg>
+                    <i class='bx bx-x close-btn' ></i>
+                    <div class="img-container">
+                        <img src="{% static 'img/gym-fitness-flyer-template-with-grunge-shapes_115083-33.jpg' %}" alt="">
+                    </div>
+                    <div class="logo">
+
+                    </div>
+                      <h1>Quality Graphics & Logos <span>AD</span></h1>
+                      <p>Logo Design|Truck-Boat-Car-Trailer Graphics|Since 2002</p>
+                      <div class="btn-container">
+                        <a href="#" class="btn_cta">Open</a>
+                      </div>
+                </div>
+
+              </div>
+        </section>
+        <div class="img_result">
+            <img src="{% static 'img/trophy.svg' %}" alt="">
+        </div>
+        <h1>Congratulation</h1>
+        <h3>Your score</h3>
+        <p>{{point}}/{{q_count}}</p>
+        <h3>Earned points</h3>
+        <p><i class='bx bxs-coin-stack'></i>{{result}}</p>
+        <div class="btns">
+            <a href="" class="button-light" onclick="window.print()"><i class='bx bxs-share' ></i>Share results</a>
+            <a href="{% url 'home' %}"class="button-light" id="share"><i class='bx bx-arrow-back' ></i>Back to home</a>
+        </div>
+    </section>
+</body>
+<script>
+
+    var countdownNumberEl = document.getElementById('countdown-number');
+    var countdown = 15;
+    var svgCircle = document.querySelector(".svg circle")
+    var closeAdButton = document.querySelector(".close-btn")
+    var adPopup = document.querySelector(".ad")
+
+    countdownNumberEl.textContent = countdown;
+
+    setInterval(function() {
+        countdown = -- countdown
+        if (countdown <= 0){
+            countdownNumberEl.style.display = "none"
+            closeAdButton.style.opacity = "1"
+            closeAdButton.style.display = "block"
+            svgCircle.style.display = "none"
+            countdown = "0"
+            closeAdButton.addEventListener("click", function(){
+                adPopup.style.display = "none"
+            })
+        }
+        else if(countdown < 10){
+            countdown = "0" + countdown
+        }
+        countdownNumberEl.textContent = countdown;
+
+
+    }, 1000);
+</script>
+</html>
